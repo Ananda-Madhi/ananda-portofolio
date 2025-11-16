@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ananda Christopher Gunawan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    :root {
+      --radius: 1rem;
+      --gap-sm: 0.75rem;
+      --gap-md: 1.5rem;
+      --gap-lg: 2.5rem;
+      --section-padding: 4rem;
+    }
+    html {
+      scroll-padding-top: 6rem; /* Offset for fixed navbar */
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      position: relative;
+      line-height: 1.6;
+    }
+    .card-hover {
+      transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+      will-change: transform, box-shadow;
+    }
+    .card-hover:hover {
+      transform: scale(1.02);
+      box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1), 0 10px 15px -6px rgba(0,0,0,0.1);
+    }
+    .dark .card-hover:hover {
+      box-shadow: 0 15px 30px -5px rgba(80, 70, 220, 0.1), 0 10px 15px -6px rgba(80, 70, 220, 0.1);
+    }
+    .highlight-gradient {
+      background: linear-gradient(135deg, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* === Background Particles === */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(124, 58, 237, 0.2);
+      animation: float 20s infinite ease-in-out;
+      filter: blur(1px);
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    /* === Noise === */
+    .noise {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.015;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* === Button Consistency === */
+    /* NOTE: @apply rules do not work with the CDN build. 
+      Styling is applied directly via Tailwind classes in the HTML.
+    */
+    .btn {
+      /* @apply font-semibold px-5 py-2.5 rounded-xl transition-all flex items-center justify-center gap-2; */
+    }
+    .btn-primary { /* @apply bg-green-600 text-white hover:bg-green-700 shadow-md hover:shadow-lg; */ }
+    .btn-secondary { /* @apply bg-white text-gray-800 border border-gray-300 hover:bg-gray-50 shadow-sm hover:shadow-md dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700; */ }
+    .btn-github { /* @apply bg-gray-900 text-white hover:bg-black dark:bg-gray-700 dark:hover:bg-gray-600; */ }
+    .btn-linkedin { /* @apply bg-blue-600 text-white hover:bg-blue-700; */ }
+  </style>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          borderRadius: {
+            'xl': '1rem'
+          }
+        }
+      }
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('darkMode', isDark);
+      updateToggleIcon();
+    }
+
+    function updateToggleIcon() {
+      const toggle = document.getElementById('darkModeToggle');
+      if (!toggle) return; // Guard clause
+      if (document.documentElement.classList.contains('dark')) {
+        toggle.innerHTML = '<i class="fas fa-sun text-yellow-400"></i>';
+      } else {
+        toggle.innerHTML = '<i class="fas fa-moon text-gray-700"></i>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = window.innerWidth > 768 ? 30 : 15; // More particles
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        const size = Math.random() * 40 + 10; // Smaller particles
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const delay = Math.random() * 15;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}%`;
+        particle.style.top = `${posY}%`;
+        particle.style.animationDelay = `${delay}s`;
+        particlesContainer.appendChild(particle);
+      }
+
+      const saved = localStorage.getItem('darkMode') === 'true';
+      if (saved || (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+      updateToggleIcon();
+    });
+  </script>
+</head>
+<body class="bg-gradient-to-b from-white to-gray-50 dark:bg-gradient-to-b dark:from-gray-950 dark:to-gray-900 text-gray-800 dark:text-gray-100">
+
+  <div class="particles" id="particles"></div>
+  <div class="noise"></div>
+
+  <nav class="fixed top-0 left-0 w-full z-50 bg-white/70 dark:bg-gray-950/70 backdrop-blur-lg border-b border-gray-200/50 dark:border-gray-800/50">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="flex justify-between items-center h-20">
+        <a href="#home" class="text-xl font-bold text-gray-900 dark:text-white">
+          Ananda C. Gunawan
+        </a>
+        
+        <div class="hidden md:flex items-center space-x-6">
+          <a href="#home" class="font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Home</a>
+          <a href="#about" class="font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">About</a>
+          <a href="#skills" class="font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Skills</a>
+          <a href="#projects" class="font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Projects</a>
+          
+          <button id="darkModeToggle" onclick="toggleDarkMode()" 
+            class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center shadow-sm">
+            </button>
+        </div>
+
+        <div class="md:hidden">
+          <button id="darkModeToggleMobile" onclick="toggleDarkMode()" 
+            class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center shadow-sm">
+            <script>
+              document.addEventListener('DOMContentLoaded', () => {
+                const toggleMobile = document.getElementById('darkModeToggleMobile');
+                if(toggleMobile) {
+                  const updateMobileIcon = () => {
+                     if (document.documentElement.classList.contains('dark')) {
+                       toggleMobile.innerHTML = '<i class="fas fa-sun text-yellow-400"></i>';
+                     } else {
+                       toggleMobile.innerHTML = '<i class="fas fa-moon text-gray-700"></i>';
+                     }
+                  };
+                  updateMobileIcon();
+                  // Update mobile icon when main toggle is clicked
+                  const mainToggle = document.getElementById('darkModeToggle');
+                  if(mainToggle) {
+                    mainToggle.addEventListener('click', updateMobileIcon);
+                  } else {
+                    // If main toggle isn't present, make this button the primary updater
+                    toggleMobile.addEventListener('click', updateMobileIcon);
+                  }
+                }
+              });
+            </script>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <section id="home" class="relative pt-32 pb-20 px-4 sm:px-6">
+    <div class="absolute inset-0 z-0">
+      <img src="background.jpg" alt="Background" class="w-full h-full object-cover opacity-10 dark:opacity-15" />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/5 to-transparent"></div>
+    </div>
+
+    <div class="max-w-5xl mx-auto text-center relative z-10">
+      <div class="mb-8">
+        <div class="relative inline-block">
+          <div class="absolute -inset-4 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full blur opacity-20"></div>
+          <img src="Ananda.JPG" alt="Ananda Christopher Gunawan" 
+            class="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-white dark:border-gray-800 shadow-xl object-cover" />
+        </div>
+      </div>
+
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter mb-4">Ananda Christopher Gunawan</h1>
+      <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+        Informatics Student · <span class="highlight-gradient">AI & Data Enthusiast</span>
+      </p>
+      <p class="text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
+        Passionate about leveraging Machine Learning and Data Analysis to create innovative solutions with social impact.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="https://wa.me/qr/KADWELLQKISOM1" target="_blank" class="btn btn-primary font-semibold px-6 py-3 rounded-full transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-105 bg-green-600 text-white hover:bg-green-700">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+        <a href="https://www.linkedin.com/in/ananda-christopher-gunawan-b1328b28a/" target="_blank" class="btn btn-linkedin font-semibold px-6 py-3 rounded-full transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-105 bg-blue-600 text-white hover:bg-blue-700">
+          <i class="fab fa-linkedin-in"></i> LinkedIn
+        </a>
+        <a href="https://github.com/Ananda-Madhi" target="_blank" class="btn btn-github font-semibold px-6 py-3 rounded-full transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-105 bg-gray-900 text-white hover:bg-black dark:bg-gray-700 dark:hover:bg-gray-600">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="px-4 sm:px-6 py-20 max-w-4xl mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-10 tracking-tight">About Me</h2>
+    <div class="space-y-5 text-gray-700 dark:text-gray-300 leading-relaxed">
+      <p>
+        Currently pursuing a <strong class="text-indigo-600 dark:text-indigo-400">Bachelor of Informatics</strong> at <em>Universitas Multimedia Nusantara</em>, 
+        with deep focus on <strong>Artificial Intelligence</strong>, <strong>Data Analysis</strong>, and <strong>Full-Stack Web Development</strong>.
+      </p>
+      <p>
+        I believe technology should serve humanity—whether through improving digital services, detecting misinformation, 
+        or supporting community initiatives. When I’m not coding, I’m exploring <strong>game design</strong>, contributing to open-source, or attending tech webinars.
+      </p>
+    </div>
+  </section>
+
+  <section id="skills" class="px-4 sm:px-6 py-20 bg-gray-50 dark:bg-gray-900/50">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-10 tracking-tight">Skills & Expertise</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <div class="bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg dark:shadow-indigo-500/10">
+          <h3 class="font-bold text-xl mb-5 text-indigo-700 dark:text-indigo-400 flex items-center gap-2">
+            <i class="fas fa-laptop-code"></i> Technical Skills
+          </h3>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <i class="fas fa-circle text-indigo-500 dark:text-indigo-400 mt-1.5 text-xs"></i>
+              <span><strong>Machine Learning</strong>: Python, scikit-learn, Pandas, Matplotlib, NLP</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-circle text-indigo-500 dark:text-indigo-400 mt-1.5 text-xs"></i>
+              <span><strong>Data Analysis</strong>: Python, R, SQL, Excel</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-circle text-indigo-500 dark:text-indigo-400 mt-1.5 text-xs"></i>
+              <span><strong>Web Development</strong>: HTML, CSS, Tailwind, Laravel</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-circle text-indigo-500 dark:text-indigo-400 mt-1.5 text-xs"></i>
+              <span><strong>Mobile & Backend</strong>: Kotlin, Java, C, Firebase</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-circle text-indigo-500 dark:text-indigo-400 mt-1.5 text-xs"></i>
+              <span><strong>Database Systems</strong>: MySQL, PostgreSQL</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg dark:shadow-purple-500/10">
+          <h3 class="font-bold text-xl mb-5 text-purple-700 dark:text-purple-400 flex items-center gap-2">
+            <i class="fas fa-users"></i> Soft Skills
+          </h3>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3">
+              <i class="fas fa-circle text-purple-500 dark:text-purple-400 mt-1.5 text-xs"></i>
+              <span>Logistics & Event Planning</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-circle text-purple-500 dark:text-purple-400 mt-1.5 text-xs"></i>
+              <span>Time & Team Coordination</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-circle text-purple-500 dark:text-purple-400 mt-1.5 text-xs"></i>
+              <span>Security & Risk Management</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="fas fa-circle text-purple-500 dark:text-purple-400 mt-1.5 text-xs"></i>
+              <span>Problem Solving & Critical Thinking</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="px-4 sm:px-6 py-20">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-10 tracking-tight">Featured Projects</h2>
+      <div class="space-y-8">
+
+        <div class="bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg dark:shadow-indigo-500/10 card-hover">
+          <div class="flex flex-col md:flex-row gap-8">
+            <div class="flex-1">
+              <h3 class="text-2xl font-bold mb-3">Fake Review Detection Using Machine Learning</h3>
+              <p class="text-gray-600 dark:text-gray-400 mb-5">
+                A Python-based ML model to detect deceptive product reviews using NLP and classification techniques. Achieved >85% accuracy on real-world datasets.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-200 text-xs px-3 py-1.5 rounded-full font-medium">Python</span>
+                <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-200 text-xs px-3 py-1.5 rounded-full font-medium">scikit-learn</span>
+                <span class="bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-200 text-xs px-3 py-1.5 rounded-full font-medium">NLP</span>
+                <span class="bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-gray-300 text-xs px-3 py-1.5 rounded-full font-medium">2025</span>
+              </div>
+            </div>
+            <div class="flex items-start md:items-end md:mt-0 mt-2">
+              <a href="https://github.com/Ananda-Madhi/Fake-Review-Detection-with-Machine-Learning-Algorithm" target="_blank" class="btn btn-github font-semibold px-4 py-2.5 rounded-full transition-all flex items-center justify-center gap-2 bg-gray-900 text-white hover:bg-black dark:bg-gray-700 dark:hover:bg-gray-600">
+                <i class="fab fa-github"></i> View Code
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg dark:shadow-indigo-500/10 card-hover">
+          <div class="flex flex-col md:flex-row gap-8">
+            <div class="flex-1">
+              <h3 class="text-2xl font-bold mb-3">Ark Care Ministry Website</h3>
+              <p class="text-gray-600 dark:text-gray-400 mb-5">
+                Developed a responsive front-end interface with integrated relational database to streamline ministry operations and community service coordination.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-200 text-xs px-3 py-1.5 rounded-full font-medium">HTML/CSS</span>
+                <span class="bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-200 text-xs px-3 py-1.5 rounded-full font-medium">Tailwind</span>
+                <span class="bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-200 text-xs px-3 py-1.5 rounded-full font-medium">MySQL</span>
+                <span class="bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-gray-300 text-xs px-3 py-1.5 rounded-full font-medium">2024</span>
+              </div>
+            </div>
+            <div class="flex items-start md:items-end md:mt-0 mt-2">
+              <a href="https://github.com/davidgrcias/acm/tree/nanda-aboutus" target="_blank" class="btn btn-github font-semibold px-4 py-2.5 rounded-full transition-all flex items-center justify-center gap-2 bg-gray-900 text-white hover:bg-black dark:bg-gray-700 dark:hover:bg-gray-600">
+                <i class="fab fa-github"></i> View Code
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-200/50 dark:border-gray-800/50 shadow-lg dark:shadow-indigo-500/10 card-hover">
+          <div class="flex flex-col md:flex-row gap-8">
+            <div class="flex-1">
+              <h3 class="text-2xl font-bold mb-3">CashFlow Report App (Kotlin)</h3>
+              <p class="text-gray-600 dark:text-gray-400 mb-5">
+                A mobile application for real-time cash flow tracking with Firebase backend, interactive charts, and user authentication.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200 text-xs px-3 py-1.5 rounded-full font-medium">Kotlin</span>
+                <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200 text-xs px-3 py-1.5 rounded-full font-medium">Android</span>
+                <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200 text-xs px-3 py-1.5 rounded-full font-medium">Firebase</span>
+                <span class="bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-gray-300 text-xs px-3 py-1.5 rounded-full font-medium">2025</span>
+              </div>
+            </div>
+            <div class="flex items-start md:items-end md:mt-0 mt-2">
+              <a href="https://github.com/Ananda-Madhi/CashflowReportApp" target="_blank" class="btn btn-github font-semibold px-4 py-2.5 rounded-full transition-all flex items-center justify-center gap-2 bg-gray-900 text-white hover:bg-black dark:bg-gray-700 dark:hover:bg-gray-600">
+                <i class="fab fa-github"></i> View Code
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-gray-950 text-gray-300 py-16 mt-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+      <p class="text-2xl font-bold text-white mb-2">Ananda Christopher Gunawan</p>
+      <p class="mb-1">Tangerang, Banten · Indonesia</p>
+      <p class="text-sm mb-8">anandachristophergunawan@gmail.com</p>
+      
+      <div class="flex justify-center gap-5 mb-8">
+        <a href="https://wa.me/qr/KADWELLQKISOM1" target="_blank" class="bg-green-600 hover:bg-green-700 w-12 h-12 rounded-full flex items-center justify-center transition hover:scale-110">
+          <i class="fab fa-whatsapp text-lg text-white"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/ananda-christopher-gunawan-b1328b28a/" target="_blank" class="bg-blue-600 hover:bg-blue-700 w-12 h-12 rounded-full flex items-center justify-center transition hover:scale-110">
+          <i class="fab fa-linkedin-in text-lg text-white"></i>
+        </a>
+        <a href="https://github.com/Ananda-Madhi" target="_blank" class="bg-gray-700 hover:bg-gray-600 w-12 h-12 rounded-full flex items-center justify-center transition hover:scale-110">
+          <i class="fab fa-github text-lg text-white"></i>
+        </a>
+      </div>
+      
+      <p class="text-gray-500 text-sm">© 2025 · Built with ❤️ and Tailwind CSS</p>
+    </div>
+  </footer>
+
+</body>
+</html>
